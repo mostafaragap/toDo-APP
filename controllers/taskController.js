@@ -1,5 +1,5 @@
 
-const { addTaskQuery, deleteTaskQuery, getTaskByIdQuery, updateTaskQuery , getUserTasksQuery} = require("../sevecis/taskService")
+const { addTaskQuery, deleteTaskQuery, getTaskByIdQuery, updateTaskQuery , getUserTasksQuery , getAllTasksQuery} = require("../sevecis/taskService")
 
 
 
@@ -61,4 +61,17 @@ const getUserTasks = async (req, res) => {
     }
 } 
 
-module.exports = {createTask,removeTask,updateTask,getTask, getUserTasks   }
+const getAllTasks = async (req, res) => {
+    try {
+        const {page , pageSize} = req.query 
+      
+        let pageNum  = +page || 1
+        let pageSizes  = +pageSize || 10
+        const allTasks = await getAllTasksQuery(pageNum ,pageSizes )
+        return res.status(200).send({allTasks})
+    } catch (error) {
+        return res.status(400).send({message : error.message})
+    }
+}
+
+module.exports = {createTask,removeTask,updateTask,getTask, getUserTasks, getAllTasks   }

@@ -57,4 +57,18 @@ const updateTaskQuery = async ( taskId ,title , body) => {
 }
 
 
-module.exports = {addTaskQuery ,getTaskByIdQuery , getUserTasksQuery , deleteTaskQuery, updateTaskQuery }
+const getAllTasksQuery = async ( page=1 , pageSizes = 10) => {
+    try {
+       const allTasks = await Task.find({})
+       .skip(pageSizes * (page - 1))
+       .limit(pageSizes);
+
+       if(allTasks) return allTasks
+       else throw new Error("sorry Error while get all tasks")  
+    } catch (error) {
+       throw new Error(error.message)
+    }
+   }
+
+
+module.exports = {addTaskQuery ,getTaskByIdQuery , getUserTasksQuery , deleteTaskQuery, updateTaskQuery, getAllTasksQuery }
